@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="en">
+ <head>
+	  <meta charset="UTF-8">
+	  <meta name="Generator" content="EditPlus®">
+	  <meta name="Author" content="">
+	  <meta name="Keywords" content="">
+	  <meta name="Description" content="">
+	  <title>小百度</title>
+	  <style>
+			*{margin:0;padding:0;}
+			img.title{
+				display:block;
+				margin:100px auto 0px;
+				width:280px;
+				height:130px;
+			}
+			.show{
+				width:625px;
+				height:30px;
+				margin:20px auto;
+				position:relative;
+			}
+			#text{
+				width:500px;
+				height:30px;
+				float:left;
+				text-indent:10px;
+			}
+			.btn{
+				width:110px;
+				height:34px;
+				background:#0033ff;
+				float:left;
+				color:#fff;
+				line-height:39px;
+				text-align:center;
+				cursor:pointer;
+			}
+			.btn:hover{
+				box-shadow:0px 0px 4px #0033ff;/* 盒子阴影 */
+				background:#0066cc;
+			}
+			.search{
+				width:502px;
+				border:1px solid #ddd;
+				position:absolute;
+				top:37px;
+				/* height:50px; */
+				display:none;
+			}
+			.search ul li{
+				list-style:none;
+				width:502px;
+				line-height:30px;
+				text-indent:10px;
+			}
+			.search ul li a{
+				color:#000;
+				text-decoration:none;
+				display:block;
+			}
+			.search ul li a:hover{
+				background:#ddd;
+			}
+	  </style>
+ </head>
+ <body>
+		<img src ="images/1.png" class="title" />
+		<div class="show">
+				<input type="text" id = "text"/>
+				<div class="btn" id="btn1">百度一下</div>
+				<div class="search">
+						<ul>
+							
+						</ul>
+				</div>
+		</div> 
+		<script type="text/javascript">
+			/*
+					javascript
+			1、DOM文档对象模型		2、BOM浏览器对象模型		  3、ECMAscript语法规范（现在还是ES5为主）
+
+				触发这个特效的对象是谁	触发事件是谁
+
+				zhanglei({"q":"1","p":false,"bs":"","csor":"1","status":0,"g":[ { "q": "163", "t": "n", "st": { "q": "163", "new": 0 } }, { "q": "12306", "t": "n", "st": { "q": "12306", "new": 0 } }, { "q": "163邮箱登陆", "t": "n", "st": { "q": "163邮箱登陆", "new": 0 } }, { "q": "126", "t": "n", "st": { "q": "126", "new": 0 } }, { "q": "126邮箱登陆", "t": "n", "st": { "q": "126邮箱登陆", "new": 0 } }, { "q": "17173", "t": "n", "st": { "q": "17173", "new": 0 } }, { "q": "139邮箱登陆", "t": "n", "st": { "q": "139邮箱登陆", "new": 0 } }, { "q": "12306铁路客户服务中心", "t": "n", "st": { "q": "12306铁路客户服务中心", "new": 0 } }, { "q": "163邮箱", "t": "n", "st": { "q": "163邮箱", "new": 0 } }, { "q": "1688", "t": "n", "st": { "q": "1688", "new": 0 } } ],"s":["163","12306","163邮箱登陆","126","126邮箱登陆","17173","139邮箱登陆","12306铁路客户服务中心","163邮箱","1688"]});
+				
+				函数名(参数)
+					参数			json数据 >> 对象字面量
+					对象={"name":"章磊","age":"23"}
+					对象.name	就可以获取对象的name值：章磊
+			*/
+			var otext = document.getElementById("text");//通过id获取元素对象
+			var osea = document.getElementsByClassName("search")[0];//通过class类名获取元素（h5新增 ie9以下，没用效果）存在一个元素集合里面
+			var oul = document.getElementsByTagName("ul")[0];//通过元素名获取元素
+			var obtn = document.getElementsByClassName("btn")[0];
+			otext.onkeyup = function(ev){//松开键盘触发事件
+				ev = ev || window.event;
+				var val = this.value;//获取文本框里面的内容
+				//if(val){if运行机制 括号里面不是判断语句	而是判断布尔值（true	false）隐式转换	0 undefind false 都会判断为false
+					//osea.style.display = "block";
+				//}else{
+					//osea.style.display = "none";
+				//}
+				val?osea.style.display = "block":osea.style.display = "none";//三木运算,当条件和语句都只有一句话的时候可以用
+				var os = document.createElement("script");//创建一个元素对象''
+				os.src="https://sp0.baidu.com/5a1Fazu8AA54nxGko9WTAnF6hhy/su?wd="+val+"&json=1&p=3&sid=1431_21079&req=2&csor=1&cb=zhanglei";
+				document.body.appendChild(os);//添加子节点
+				
+				//判断如果敲击确认键就实现跳转功能
+				if(ev.keyCode==13){ 
+					//window.open("https://www.baidu.com/s?wd="+otext.value+"");打开一个页面
+					document.all("btn1").click();//通过all()查找id="btn"的元素，然后运行click事件，就相当于按下enter键时就是点击了id=btn的按钮
+				}
+			}
+			function zhanglei(json){
+				oul.innerHTML = "";
+				for(var i = 0;i < json.s.length;i++)//for循环的作用		控制一个重复执行的语句	括号里面是为了控制循环次数的
+				{
+					//循环体
+					var oli = document.createElement("li");
+					oli.innerHTML = "<a href='https://www.baidu.com/s?wd="+json.s[i]+"'>"+json.s[i]+"</a>";
+					oul.appendChild(oli);//在ul后面添加一个li元素
+				}
+			}
+			obtn.onclick = function(){
+				window.open("https://www.baidu.com/s?wd="+otext.value+"");
+			}
+			
+		</script>
+ </body>
+</html>
